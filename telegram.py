@@ -1,7 +1,9 @@
 import requests
+import datetime
+from telegram.ext import ConversationHandler
 import mysql.connector
 from mysql.connector import MySQLConnection, Error
-def query_with_fetchone():
+def query_with_fetchone(day):
 
     try:
         conn = mysql.connector.connect(host='localhost',
@@ -9,8 +11,16 @@ def query_with_fetchone():
                                        user='puneethchanda',
                                        password='Jyothiraj_112')
         cursor = conn.cursor()
-        cursor.execute("SELECT `Monday`FROM `tt` WHERE 1")
-
+        if(day == 'Monday'):
+            cursor.execute("SELECT Monday FROM `tt` WHERE 1")
+        elif(day == 'Tuesday'):
+            cursor.execute("SELECT Tuesday FROM `tt` WHERE 1")
+        elif(day == 'Wednesday'):
+            cursor.execute("SELECT Wednesday FROM `tt` WHERE 1")
+        elif(day == 'Thursday'):
+            cursor.execute("SELECT Thursday FROM `tt` WHERE 1")
+        elif(day == 'Friday'):
+            cursor.execute("SELECT Friday FROM `tt` WHERE 1")
         rows = cursor.fetchall()
         
         for i in rows:
@@ -20,7 +30,7 @@ def query_with_fetchone():
         print(k)
     return(a)
 
-def telegram_bot_sendtext(bot_message):
+def telegram_bot_sendtext(bot_message,bot_chatID):
 
     bot_token = '829818125:AAGtg8og4X7SIoRVA-baPMoI1-O0djppoe0'
     bot_chatID = '791346451'
@@ -32,6 +42,11 @@ def telegram_bot_sendtext(bot_message):
 
 if __name__ == '__main__':
     a=[]
-    query_with_fetchone()
+    now = datetime.datetime.now()
+    day=now.strftime("%A")
+    query_with_fetchone(day)
+    bot_chatID = telegram.User.id
     for j in range(len(a)):
-        print(a[j])
+        tt=a[j][0]
+        telegram_bot_sendtext(tt,bot_chatID)
+
