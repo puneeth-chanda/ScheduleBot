@@ -1,6 +1,7 @@
+import json 
 import requests
 import datetime
-from telegram.ext import ConversationHandler
+import server
 import mysql.connector
 from mysql.connector import MySQLConnection, Error
 def query_with_fetchone(day):
@@ -30,23 +31,45 @@ def query_with_fetchone(day):
         print(k)
     return(a)
 
-def telegram_bot_sendtext(bot_message,bot_chatID):
+TOKEN = "829818125:AAGtg8og4X7SIoRVA-baPMoI1-O0djppoe0"
+URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 
-    bot_token = '829818125:AAGtg8og4X7SIoRVA-baPMoI1-O0djppoe0'
-    bot_chatID = '791346451'
-    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+
+def get_url(url):
+    response = requests.get(url)
+    content = response.content.decode("utf8")
+    return content
+
+
+def get_json_from_url(url):
+    content = get_url(url)
+    js = json.loads(content)
+    return js
+
+
+def get_updates():
+    url = URL + "getUpdates"
+    js = get_json_from_url(url)
+    return js
+
+
+def get_last_chat_id(updates):
+    num_updates = len(updates["result"])
+    last_update = num_updates - 1
+    chat_id = updates["result"][last_update]["message"]["chat"]["id"]
+    return (chat_id)
+
+
+def send_message(tt, chat_id):
+    url = URL + "sendMessage?text={}&chat_id={}".format(tt, chat_id)
+    get_url(url)
     
-    response = requests.get(send_text)
-
-    return response.json()
-
 if __name__ == '__main__':
     a=[]
     now = datetime.datetime.now()
     day=now.strftime("%A")
     query_with_fetchone(day)
-    bot_chatID = telegram.User.id
     for j in range(len(a)):
         tt=a[j][0]
-        telegram_bot_sendtext(tt,bot_chatID)
-
+        chat = get_last_chat_id(get_updates())
+        send_message(tt, chat)
