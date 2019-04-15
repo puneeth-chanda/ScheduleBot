@@ -55,20 +55,41 @@ def get_updates():
 
 def get_last_chat_id(updates,i):
     num_updates = len(updates["result"])
-    chat_id = updates["result"][1]["chat"]["id"]
+    last_update = num_updates - 1
+    chat_id = updates["result"][i]["message"]["chat"]["id"]
     return (chat_id)
 
+def no_subscribers(updates):
+    num_subs = len(updates["result"])
+    return(num_subs)
 
-def send_message(tt, chat_id):
+def send_message(tt,chat_id):
     url = URL + "sendMessage?text={}&chat_id={}".format(tt, chat_id)
     get_url(url)
     
 if __name__ == '__main__':
     a=[]
+    b=[]
     now = datetime.datetime.now()
     day=now.strftime("%A")
     query_with_fetchone(day)
-    for j in range(len(a)):
+    for i in range(no_subscribers(get_updates())):
+        b.append(get_last_chat_id(get_updates(),i))
+    for i in range(no_subscribers(get_updates())):
+        for j in range(len(a)):
+            tt=a[j][0]
+            chat = b[i]
+            send_message(tt, chat)
+
+
+
+
+
+
+
+
+
+    """for j in range(len(a)):
         tt=a[j][0]
-        chat = get_last_chat_id
-        send_message(tt, chat)
+        chat = get_last_chat_id(get_updates())
+        send_message(tt, chat)"""
