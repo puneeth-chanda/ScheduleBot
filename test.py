@@ -55,7 +55,6 @@ def get_updates():
 
 def get_last_chat_id(updates,i):
     num_updates = len(updates["result"])
-    last_update = num_updates - 1
     chat_id = updates["result"][i]["message"]["chat"]["id"]
     return (chat_id)
 
