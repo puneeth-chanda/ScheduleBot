@@ -31,7 +31,7 @@ def query_with_fetchone(day):
         print(k)
     return(a)
 
-TOKEN = "829818125:AAGtg8og4X7SIoRVA-baPMoI1-O0djppoe0"
+TOKEN = "Token here"
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 
 
