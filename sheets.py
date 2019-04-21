@@ -10,7 +10,7 @@ credentials= ServiceAccountCredentials.from_json_keyfile_name('timetable-5bfb2ff
 service = discovery.build('sheets', 'v4', credentials=credentials)
 
 # The ID of the spreadsheet to retrieve data from.
-spreadsheet_id = '19h4E_xF5kbWiz0P7fIIEMfblcphKM4zICaA1mLe_vtM'  
+spreadsheet_id = '<sheet-id>'  
 
 
 # The A1 notation of the values to retrieve.:ranges
