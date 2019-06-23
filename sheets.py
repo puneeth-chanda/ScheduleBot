@@ -40,7 +40,7 @@ def usernames(i):
         username = a[i][0]
         return(username)
 """
-TOKEN = "647896728:AAELpQDWDBZ1h0c976Hx_XyOzyGHljig6AI"
+TOKEN = ""
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 
 
